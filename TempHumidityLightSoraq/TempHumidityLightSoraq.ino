@@ -1,11 +1,18 @@
    
 #include <TheThingsNetwork.h>
 #include "DHT.h"
+#include <Arduino.h>
+#include <SPI.h>
+#include <Sodaq_RN2483.h>
+#include <Sodaq_wdt.h>
+#include <RN487x_BLE.h>
 
 // Set your AppEUI and AppKey
 const char *appEui = "Insert AppEUI";
 const char *appKey = "Insert Appkey";
 
+
+#define bleSerial Serial1
 #define loraSerial Serial2
 #define debugSerial SerialUSB
 
@@ -23,9 +30,30 @@ TheThingsNetwork ttn(loraSerial, debugSerial, freqPlan);
 
 void setup()
 {
+  sodaq_wdt_enable(WDT_PERIOD_8X);
+  sodaq_wdt_reset();
+  sodaq_wdt_safe_delay(5000);
+    
   loraSerial.begin(57600);
   debugSerial.begin(9600);
- 
+  
+  LoRaBee.init(loraSerial, LORA_RESET);
+  LoRaBee.sleep();
+  sodaq_wdt_safe_delay(5); 
+
+  rn487xBle.hwInit();
+  bleSerial.begin(rn487xBle.getDefaultBaudRate());
+  rn487xBle.initBleStream(&bleSerial);
+  rn487xBle.enterCommandMode();
+  rn487xBle.dormantMode();
+  bleSerial.end();
+  DFlashUltraDeepSleep();
+  SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;  // set sleep mode -> deep sleep
+  SerialUSB.flush();
+  SerialUSB.end();
+  USBDevice.detach();
+  USB->DEVICE.CTRLA.reg &= ~USB_CTRLA_ENABLE;   // Disable USB
+  
   // Wait a maximum of 10s for Serial Monitor
   while (!debugSerial && millis() < 10000)
     ;
@@ -97,6 +125,62 @@ void loop()
   // Send it off
   ttn.sendBytes(payload, sizeof(payload));
 
-  //Wait 60 second between readings
-  delay(60000);
+  //SLEEP
+  sodaq_wdt_reset();
+  systemSleep();
+}
+
+void systemSleep()
+{
+  // Disable systick interrupt
+  SysTick->CTRL &= ~SysTick_CTRL_TICKINT_Msk;
+
+  __WFI(); // SAMD sleep
+
+  // Enable systick interrupt
+  SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
+
+}
+
+// FLASH chip sleep functions
+void DFlashUltraDeepSleep()
+{
+  static const uint8_t SS_DFLASH  = 44 ;
+  SPI.begin();
+  pinMode(SS_DFLASH, OUTPUT);
+  digitalWrite(SS_DFLASH, HIGH);
+ // transmit(0xAB);
+ // sodaq_wdt_safe_delay(10);
+  transmit(0xB9);
+  SPI.end();
+  resetSPIPins();
+}
+
+void transmit(uint8_t val)
+{
+  SPISettings settings;
+  digitalWrite(SS_DFLASH, LOW);
+  SPI.beginTransaction(settings);
+  SPI.transfer(val);
+  SPI.endTransaction();
+  digitalWrite(SS_DFLASH, HIGH);
+  delayMicroseconds(1000);
+}
+
+void resetSPIPins()
+{
+  resetPin(MISO);
+  resetPin(MOSI);
+  resetPin(SCK);
+  resetPin(SS_DFLASH);
+}
+
+void resetPin(uint8_t pin)
+{
+  PORT->Group[g_APinDescription[pin].ulPort].
+  PINCFG[g_APinDescription[pin].ulPin].reg=(uint8_t)(0);
+  PORT->Group[g_APinDescription[pin].ulPort].
+  DIRCLR.reg = (uint32_t)(1<<g_APinDescription[pin].ulPin);
+  PORT->Group[g_APinDescription[pin].ulPort].
+  OUTCLR.reg = (uint32_t) (1<<g_APinDescription[pin].ulPin);
 }
