@@ -117,8 +117,8 @@ void loop()
 
 
   //---------Channel Details---------//
-  unsigned long counterChannelNumber = 1425232;            // Channel ID
-  const char * myCounterReadAPIKey = "29E46M8U8281EY2K"; // Read API Key
+  unsigned long counterChannelNumber = XXXX;            // Channel ID
+  const char * myCounterReadAPIKey = "XXXX"; // Read API Key
   //-------------------------------//
 
   //---------------- Room 3 ----------------//
