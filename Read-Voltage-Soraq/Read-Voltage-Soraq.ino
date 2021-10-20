@@ -1,8 +1,3 @@
-#define ADC_AREF 3.3f
-// #define BATVOLT_R1 2.0f // One v1
-// #define BATVOLT_R2 2.0f // One v1
-#define BATVOLT_R1 4.7f // One v2
-#define BATVOLT_R2 10.0f // One v2
 #define BATVOLT_PIN BAT_VOLT
 
 #define debugSerial SerialUSB
