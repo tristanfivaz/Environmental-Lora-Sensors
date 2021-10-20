@@ -9,7 +9,7 @@
 int BatteryAVG = 0;
 int BatteryPin = A5;
 int BatteryInput = 0;
-int Voltage;
+float Voltage;
 
 void setup() {
   // put your setup code here, to run once:
@@ -18,14 +18,17 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  SerialUSB.println(getBatteryVoltage());
+  getBatteryVoltage();
+  //SerialUSB.println(getBatteryVoltage());
+  debugSerial.println(BatteryInput);
   delay(2000);
 }
 
 uint16_t getBatteryVoltage()
 {
   BatteryInput = analogRead(BatteryPin);
-  Voltage = BatteryInput * (4.7 / (14.7));
+  //Voltage = BatteryInput * (4.7 / (14.7)); voltage divider formula
+  Voltage = 4.2 * (BatteryInput / 1023.0) + 0.44;
   debugSerial.print(F("Battery Voltage: "));
-  SerialUSB.println(Voltage);
+  debugSerial.println(Voltage);
 }
