@@ -113,8 +113,8 @@ void loop()
 
 
   //---------Channel Details---------//
-  unsigned long counterChannelNumber = XXXX;            // Channel ID
-  const char * myCounterReadAPIKey = "XXXX"; // Read API Key
+  counterChannelNumber = XXXX;            // Channel ID
+  myCounterReadAPIKey = "XXXX"; // Read API Key
   //-------------------------------//
 
   //---------------- Room 3 ----------------//
@@ -176,8 +176,8 @@ void loop()
 
 
   //---------Channel Details---------//
-  unsigned long counterChannelNumber = XXXX;            // Channel ID
-  const char * myCounterReadAPIKey = "XXXX"; // Read API Key
+  counterChannelNumber = XXXX;            // Channel ID
+  myCounterReadAPIKey = "XXXX"; // Read API Key
   //-------------------------------//
   
   //---------------- Room 5 ----------------//
@@ -186,7 +186,7 @@ void loop()
   if (statusCode == 200)
   {
     Serial.print("Light5: ");
-    Serial.println(light1);
+    Serial.println(light5);
     if (light5 > 5)
     {
       digitalWrite(r5, HIGH);
@@ -233,8 +233,8 @@ void loop()
 
 
   //---------Channel Details---------//
-  unsigned long counterChannelNumber = XXXX;            // Channel ID
-  const char * myCounterReadAPIKey = "XXXX"; // Read API Key
+  counterChannelNumber = XXXX;            // Channel ID
+  myCounterReadAPIKey = "XXXX"; // Read API Key
   //-------------------------------//
 
   //---------------- Room 7 ----------------//
@@ -261,7 +261,7 @@ void loop()
   //-------------- End of Room 7 -------------//
 
   //---------------- Room 8 ----------------//
-  long light4 = ThingSpeak.readLongField(counterChannelNumber, FieldNumber8, myCounterReadAPIKey);
+  long light8 = ThingSpeak.readLongField(counterChannelNumber, FieldNumber8, myCounterReadAPIKey);
   statusCode = ThingSpeak.getLastReadStatus();
   if (statusCode == 200)
   {
