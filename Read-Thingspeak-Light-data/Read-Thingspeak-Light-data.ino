@@ -14,14 +14,8 @@ int r8 = D8;
 WiFiClient  client;
 
 //---------Channel Details---------//
-unsigned long counterChannelNumber = X;            // Channel ID
-unsigned long counterChannelNumber2 = X;
-unsigned long counterChannelNumber3 = X;
-unsigned long counterChannelNumber4 = X;
-const char * myCounterReadAPIKey = "XX"; // Read API Key
-const char * myCounterReadAPIKey2 = "XX"; // Read API Key
-const char * myCounterReadAPIKey3 = "XX"; // Read API Key
-const char * myCounterReadAPIKey4 = "XX"; // Read API Key
+unsigned long counterChannelNumber = XXXX;            // Channel ID
+const char * myCounterReadAPIKey = "XXXX"; // Read API Key
 const int FieldNumber1 = 3;  // The field you wish to read
 const int FieldNumber2 = 6;  // The field you wish to read
 const int FieldNumber3 = 3;  // The field you wish to read
@@ -119,10 +113,12 @@ void loop()
 
 
   //---------Channel Details---------//
+  unsigned long counterChannelNumber = XXXX;            // Channel ID
+  const char * myCounterReadAPIKey = "XXXX"; // Read API Key
   //-------------------------------//
 
   //---------------- Room 3 ----------------//
-  long light3 = ThingSpeak.readLongField(counterChannelNumber2, FieldNumber3, myCounterReadAPIKey2);
+  long light3 = ThingSpeak.readLongField(counterChannelNumber, FieldNumber3, myCounterReadAPIKey);
   statusCode = ThingSpeak.getLastReadStatus();
   if (statusCode == 200)
   {
@@ -145,7 +141,7 @@ void loop()
   //-------------- End of Room 3 -------------//
 
   //---------------- Room 4 ----------------//
-  long light4 = ThingSpeak.readLongField(counterChannelNumber2, FieldNumber4, myCounterReadAPIKey2);
+  long light4 = ThingSpeak.readLongField(counterChannelNumber, FieldNumber4, myCounterReadAPIKey);
   statusCode = ThingSpeak.getLastReadStatus();
   if (statusCode == 200)
   {
@@ -166,25 +162,31 @@ void loop()
   }
   delay(100);
   //-------------- End of Room 4 -------------//
-}
 
 
-  //--------------------NEW CHANNEL--------------------//
+
+
+
+  //--------------------ROOMS 5 TO 8--------------------//
+
+
+
+
 
 
 
   //---------Channel Details---------//
+  unsigned long counterChannelNumber = XXXX;            // Channel ID
+  const char * myCounterReadAPIKey = "XXXX"; // Read API Key
   //-------------------------------//
-
-
-//---------------- Room 5 ----------------//
-  long light5 = ThingSpeak.readLongField(counterChannelNumber3, FieldNumber5, myCounterReadAPIKey3);
-  int statusCode;
+  
+  //---------------- Room 5 ----------------//
+  long light5 = ThingSpeak.readLongField(counterChannelNumber, FieldNumber5, myCounterReadAPIKey);
   statusCode = ThingSpeak.getLastReadStatus();
   if (statusCode == 200)
   {
     Serial.print("Light5: ");
-    Serial.println(light5);
+    Serial.println(light1);
     if (light5 > 5)
     {
       digitalWrite(r5, HIGH);
@@ -202,7 +204,7 @@ void loop()
   //-------------- End of Room 5 -------------//
 
   //---------------- Room 6 ----------------//
-  long light6 = ThingSpeak.readLongField(counterChannelNumber3, FieldNumber6, myCounterReadAPIKey3);
+  long light6 = ThingSpeak.readLongField(counterChannelNumber, FieldNumber6, myCounterReadAPIKey);
   statusCode = ThingSpeak.getLastReadStatus();
   if (statusCode == 200)
   {
@@ -231,10 +233,12 @@ void loop()
 
 
   //---------Channel Details---------//
+  unsigned long counterChannelNumber = XXXX;            // Channel ID
+  const char * myCounterReadAPIKey = "XXXX"; // Read API Key
   //-------------------------------//
 
   //---------------- Room 7 ----------------//
-  long light7 = ThingSpeak.readLongField(counterChannelNumber4, FieldNumber7, myCounterReadAPIKey4);
+  long light7 = ThingSpeak.readLongField(counterChannelNumber, FieldNumber7, myCounterReadAPIKey);
   statusCode = ThingSpeak.getLastReadStatus();
   if (statusCode == 200)
   {
@@ -257,7 +261,7 @@ void loop()
   //-------------- End of Room 7 -------------//
 
   //---------------- Room 8 ----------------//
-  long light8 = ThingSpeak.readLongField(counterChannelNumber4, FieldNumber8, myCounterReadAPIKey4);
+  long light4 = ThingSpeak.readLongField(counterChannelNumber, FieldNumber8, myCounterReadAPIKey);
   statusCode = ThingSpeak.getLastReadStatus();
   if (statusCode == 200)
   {
